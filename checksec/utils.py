@@ -39,6 +39,10 @@ PY_LOG_TO_LIEF_LOG: Dict[int, lief_loglvl] = {
 }
 
 
+def is_oat(filepath: Path) -> bool:
+    return lief.is_oat(str(filepath))
+
+
 def find_libc():
     """Find the fullpath to the libc library with multiple methods"""
     libc_path = None

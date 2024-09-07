@@ -24,7 +24,7 @@ from .elf import ELFChecksecData, ELFSecurity, get_libc, is_elf
 from .errors import ErrorParsingFailed
 from .output import JSONOutput, RichOutput
 from .pe import PEChecksecData, PESecurity, is_pe
-from .utils import lief_set_logging
+from .utils import lief_set_logging, is_oat
 
 
 def walk_filepath_list(filepath_list: List[Path], recursive: bool = False) -> Iterator[Path]:
@@ -44,7 +44,7 @@ def checksec_file(filepath: Path) -> Union["ELFChecksecData", "PEChecksecData"]:
     logging.debug("Worker %s: checking %s", os.getpid(), filepath)
     if not filepath.exists():
         raise FileNotFoundError()
-    if is_elf(filepath):
+    if is_elf(filepath) and not is_oat(filepath):
         binary = ELFSecurity(filepath)
     elif is_pe(filepath):
         binary = PESecurity(filepath)
